@@ -19,6 +19,7 @@ export const DEFAULT_SETTINGS = Object.freeze({
   monthFilter: "all",
   routeFilter: "all",
   benchmarkFilter: "all",
+  overviewPeriod: "30days",
 });
 
 const health = { runs: null, shoes: null, metadata: null, settings: null };
@@ -67,6 +68,7 @@ export function normalizeSettings(value = {}) {
     monthFilter: typeof source.monthFilter === "string" ? source.monthFilter : DEFAULT_SETTINGS.monthFilter,
     routeFilter: typeof source.routeFilter === "string" ? source.routeFilter : DEFAULT_SETTINGS.routeFilter,
     benchmarkFilter: ["all", "5k", "10k", "15k"].includes(source.benchmarkFilter) ? source.benchmarkFilter : DEFAULT_SETTINGS.benchmarkFilter,
+    overviewPeriod: ["30days", "week", "month", "year", "all"].includes(source.overviewPeriod) ? source.overviewPeriod : DEFAULT_SETTINGS.overviewPeriod,
   };
 }
 

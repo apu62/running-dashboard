@@ -15,6 +15,9 @@
 .form-panel input:focus, .form-panel select:focus, .form-panel textarea:focus { background-color: var(--input); border-color: var(--blue); }
 .panel h2, .panel h3 { margin-top: 0; }
 .panel-heading { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+.summary-heading { align-items: flex-end; flex-wrap: wrap; }
+.period-filter { flex: 0 1 170px; min-width: 150px; }
+.period-filter span { color: var(--muted); font-size: .75rem; }
 .split { align-items: center; }
 .field-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
 .span-2 { grid-column: span 2; }

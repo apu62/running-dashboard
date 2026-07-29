@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.2.0 – 2026-07-29
+
+- Kompakten Zeitraumfilter im aktuellen Überblick ergänzt.
+- „Letzte 30 Tage“ als Standard sowie Woche, Monat, Jahr und Gesamt zur Auswahl angeboten.
+- Zeitraum gemeinsam auf Kennzahlen, Trainings-Score, Erkenntnisse und Trendvisualisierung angewendet.
+- Gewählten Zeitraum dauerhaft in den lokalen Einstellungen gespeichert.
+- Herzfrequenz als dritte Datenreihe in die Trendvisualisierung aufgenommen.
+- Native Datum- und Uhrzeitfelder auf iPhones an die Formularbreite angepasst.
+- Service-Worker-Cache auf `running-dashboard-v3.2.0` aktualisiert.
+
 ## 3.1.2 – 2026-07-29
 
 - Trainings-Highlights auf ein ruhigeres Vollbreitenpanel umgestellt.

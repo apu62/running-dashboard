@@ -42,7 +42,7 @@ import { groupRunsByShoe } from "./shoes.js";
 import { getPeriodSummary } from "./dashboard.js";
 
 const { runs: STORAGE_KEY, shoes: SHOES_KEY, shoeMigration: SHOE_MIGRATION_KEY, metadata: META_KEY } = STORAGE_KEYS;
-const APP_VERSION = "3.1.2";
+const APP_VERSION = "3.2.0";
 const DB_VERSION = 2;
 const BUILD_DATE = "2026.07.29";
 const form = document.getElementById("run-form");
@@ -72,6 +72,7 @@ const hrPaceAnalysis = document.getElementById("hr-pace-analysis");
 const bestPerformances = document.getElementById("best-performances");
 const shoesSelect = document.getElementById("shoes");
 const benchmarkFilter = document.getElementById("benchmark-filter");
+const overviewPeriod = document.getElementById("overview-period");
 const saveRunBtn = document.getElementById("save-run-btn");
 const formStatus = document.getElementById("form-status");
 const cancelEditBtn = document.getElementById("cancel-edit-btn");
@@ -224,6 +225,7 @@ function buildShoeOptions() {
 monthFilter.addEventListener("change", () => { persistSettings({ monthFilter: monthFilter.value }); render(); });
 routeFilter.addEventListener("change", () => { persistSettings({ routeFilter: routeFilter.value }); render(); });
 benchmarkFilter.addEventListener("change", () => { persistSettings({ benchmarkFilter: benchmarkFilter.value }); render(); });
+overviewPeriod.addEventListener("change", () => { persistSettings({ overviewPeriod: overviewPeriod.value }); render(); });
 
 manageShoeSelect.addEventListener("change", () => {
   renameShoeInput.value = getShoeById(manageShoeSelect.value)?.name || "";
@@ -540,23 +542,23 @@ function renderStats() {
   }
 
   const filteredRuns = filterRuns(runs);
-  const totalRuns = filteredRuns.length;
-  const benchmarkLabel = benchmarkFilter.value === "5k" ? "Schnellster 5-km-Lauf" : benchmarkFilter.value === "10k" ? "Schnellster 10-km-Lauf" : "Schnellster Lauf";
-  const totalDistance = filteredRuns.reduce((sum, run) => sum + run.distance, 0);
+  const currentRuns = filterRunsByPeriod(runs, overviewPeriod.value);
+  const totalRuns = currentRuns.length;
+  const totalDistance = currentRuns.reduce((sum, run) => sum + run.distance, 0);
   const avgDistance = totalRuns ? totalDistance / totalRuns : 0;
-  const avgPace = average(filteredRuns.map((run) => Number(run.pace)).filter((value) => value > 0));
-  const bestPace = filteredRuns.length ? Math.min(...filteredRuns.map((run) => Number(run.pace)).filter((value) => value > 0)) : 0;
-  const longestRun = filteredRuns.length ? Math.max(...filteredRuns.map((run) => Number(run.distance || 0))) : 0;
-  const avgHeartRate = average(filteredRuns.map((run) => Number(run.heartRate)).filter((value) => value > 0));
-  const avgCadence = average(filteredRuns.map((run) => Number(run.cadence)).filter((value) => value > 0));
-  const totalElevation = filteredRuns.reduce((sum, run) => sum + run.elevation, 0);
-  const recent = filteredRuns.slice(0, 3);
-  const older = filteredRuns.slice(-3);
+  const avgPace = average(currentRuns.map((run) => Number(run.pace)).filter((value) => value > 0));
+  const bestPace = currentRuns.length ? Math.min(...currentRuns.map((run) => Number(run.pace)).filter((value) => value > 0)) : 0;
+  const longestRun = currentRuns.length ? Math.max(...currentRuns.map((run) => Number(run.distance || 0))) : 0;
+  const avgHeartRate = average(currentRuns.map((run) => Number(run.heartRate)).filter((value) => value > 0));
+  const avgCadence = average(currentRuns.map((run) => Number(run.cadence)).filter((value) => value > 0));
+  const totalElevation = currentRuns.reduce((sum, run) => sum + run.elevation, 0);
+  const recent = currentRuns.slice(0, 3);
+  const older = currentRuns.slice(-3);
   const recentAvg = average(recent.map((run) => run.pace));
   const olderAvg = average(older.map((run) => run.pace));
-  const score = buildScore(filteredRuns);
+  const score = buildScore(currentRuns);
 
-  let trend = "Die Entwicklung ist stabil.";
+  let trend = totalRuns ? "Die Entwicklung ist stabil." : "Im gewählten Zeitraum sind keine Läufe vorhanden.";
   if (recentAvg < olderAvg) {
     trend = `Deine durchschnittliche Pace ist ${formatPaceTrend(olderAvg - recentAvg)} geworden.`;
   } else if (recentAvg > olderAvg) {
@@ -581,7 +583,7 @@ function renderStats() {
       <div class="stat-value">${formatPace(avgPace)} min/km</div>
     </div>
     <div class="stat-card">
-      <h3>${benchmarkLabel}</h3>
+      <h3>Schnellste Pace</h3>
       <div class="stat-value">${formatPace(bestPace)} min/km</div>
     </div>
     <div class="stat-card">
@@ -606,8 +608,8 @@ function renderStats() {
   scoreLabel.textContent = score.label;
   scoreText.textContent = score.text;
   trendText.textContent = trend;
-  automaticInsights.innerHTML = renderAutomaticInsights(filteredRuns);
-  trendChart.innerHTML = renderTrendChart(filteredRuns);
+  automaticInsights.innerHTML = renderAutomaticInsights(currentRuns);
+  trendChart.innerHTML = renderTrendChart(currentRuns);
   overviewList.innerHTML = renderOverview(filteredRuns);
   highlightsList.innerHTML = renderHighlights(filteredRuns);
   shoeWearList.innerHTML = renderShoeWear(filteredRuns);
@@ -617,6 +619,31 @@ function renderStats() {
   paceCard.textContent = `${formatPace(avgPace)} min/km`;
   cadenceCard.textContent = formatCadence(avgCadence);
   heartRateCard.textContent = formatHeartRate(avgHeartRate);
+}
+
+function filterRunsByPeriod(sourceRuns, period) {
+  if (period === "all") return [...sourceRuns];
+
+  const end = new Date();
+  end.setHours(23, 59, 59, 999);
+  const start = new Date(end);
+  start.setHours(0, 0, 0, 0);
+
+  if (period === "30days") {
+    start.setDate(start.getDate() - 29);
+  } else if (period === "week") {
+    const mondayOffset = (start.getDay() + 6) % 7;
+    start.setDate(start.getDate() - mondayOffset);
+  } else if (period === "month") {
+    start.setDate(1);
+  } else if (period === "year") {
+    start.setMonth(0, 1);
+  }
+
+  return sourceRuns.filter((run) => {
+    const runDate = new Date(`${run.date}T${run.time || "00:00"}`);
+    return runDate >= start && runDate <= end;
+  });
 }
 
 function average(values) {
@@ -1653,6 +1680,7 @@ function applySettingsToUi() {
   if (historyPageSizeSetting) historyPageSizeSetting.value = String(settings.historyPageSize);
   if (historySort) historySort.value = settings.historySort;
   if (benchmarkFilter) benchmarkFilter.value = settings.benchmarkFilter;
+  if (overviewPeriod) overviewPeriod.value = settings.overviewPeriod;
   if (monthFilter) delete monthFilter.dataset.initialized;
   if (routeFilter) delete routeFilter.dataset.initialized;
   if (historyShoeFilter) delete historyShoeFilter.dataset.initialized;

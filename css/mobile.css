@@ -16,6 +16,8 @@
   .theme-toggle { min-height: 44px; padding: 7px 10px; }
   .version-chip { font-size: .75rem; }
   .panel { padding: 16px; border-radius: 15px; }
+  .summary-heading { align-items: stretch; flex-direction: column; }
+  .period-filter { flex-basis: auto; width: 100%; }
   .field-grid, .filter-row, .history-toolbar, .shoe-manager-grid, .record-grid, .settings-form, .highlights-list { grid-template-columns: 1fr; }
   input[type="date"], input[type="time"] {
     display: block;
