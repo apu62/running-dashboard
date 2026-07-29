@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.2.3 – 2026-07-29
+
+- Einstiegsskript und sämtliche internen JavaScript-Modulimporte mit einer Versionskennung versehen.
+- Veraltete Safari- und Home-Bildschirm-Modulcaches beim Update zuverlässig umgangen.
+- Service-Worker-Cache auf `running-dashboard-v3.2.3` aktualisiert.
+
 ## 3.2.2 – 2026-07-29
 
 - UUID-Erzeugung mit Safari- und Home-Bildschirm-Umgebungen ohne `crypto.randomUUID()` kompatibel gemacht.
