@@ -1,6 +1,6 @@
-import { STORAGE_KEYS } from "./storage.js?v=3.2.3";
-import { createRecoverySnapshot } from "./backup.js?v=3.2.3";
-import { createUuid } from "./uuid.js?v=3.2.3";
+import { STORAGE_KEYS } from "./storage.js?v=3.2.4";
+import { createRecoverySnapshot } from "./backup.js?v=3.2.4";
+import { createUuid } from "./uuid.js?v=3.2.4";
 
 function readLegacyNames() {
   const raw = localStorage.getItem(STORAGE_KEYS.legacyShoes);

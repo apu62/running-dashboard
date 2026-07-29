@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.2.4 – 2026-07-29
+
+- Überblickskarten mit einer inhaltsabhängigen Mindestbreite versehen und bei schmalen Desktopfenstern automatisch auf weniger Spalten verteilt.
+- Lange Kartenüberschriften vollständig umbrechbar gemacht.
+- Stylesheet- und Modul-URLs zur zuverlässigen Cache-Aktualisierung versioniert.
+- Service-Worker-Cache auf `running-dashboard-v3.2.4` aktualisiert.
+
 ## 3.2.3 – 2026-07-29
 
 - Einstiegsskript und sämtliche internen JavaScript-Modulimporte mit einer Versionskennung versehen.
