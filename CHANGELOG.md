@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.2.1 – 2026-07-29
+
+- JSON-Import bei vollständig leerem Datenbestand ohne unnötiges Recovery-Backup ermöglicht.
+- Konkrete Fehlerursache bei fehlgeschlagenen Recovery-Sicherungen im Importdialog ergänzt.
+- Service-Worker-Cache auf `running-dashboard-v3.2.1` aktualisiert.
+
 ## 3.2.0 – 2026-07-29
 
 - Kompakten Zeitraumfilter im aktuellen Überblick ergänzt.

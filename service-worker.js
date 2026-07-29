@@ -1,4 +1,4 @@
-const CACHE = "running-dashboard-v3.2.0";
+const CACHE = "running-dashboard-v3.2.1";
 const ASSETS = [
   "./", "./index.html", "./manifest.webmanifest", "./icons/app-icon.svg",
   "./css/main.css", "./css/layout.css", "./css/dashboard.css", "./css/mobile.css", "./css/themes.css",

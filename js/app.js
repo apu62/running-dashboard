@@ -42,7 +42,7 @@ import { groupRunsByShoe } from "./shoes.js";
 import { getPeriodSummary } from "./dashboard.js";
 
 const { runs: STORAGE_KEY, shoes: SHOES_KEY, shoeMigration: SHOE_MIGRATION_KEY, metadata: META_KEY } = STORAGE_KEYS;
-const APP_VERSION = "3.2.0";
+const APP_VERSION = "3.2.1";
 const DB_VERSION = 2;
 const BUILD_DATE = "2026.07.29";
 const form = document.getElementById("run-form");
@@ -124,6 +124,7 @@ let historyPageSize = settings.historyPageSize;
 const OVERVIEW_INITIAL_SIZE = 4;
 let overviewExpanded = false;
 let highlightsExpanded = false;
+let recoveryFailureMessage = "";
 
 let runs = loadRuns();
 let shoes = loadShoes();
@@ -1511,7 +1512,10 @@ async function importBackup(file) {
     true,
   );
   if (!confirmed) return;
-  if (!createAutomaticRecovery("Vor JSON-Import")) throw new Error("Der Import wurde abgebrochen, weil das Recovery-Backup nicht gespeichert werden konnte.");
+  if (!createAutomaticRecovery("Vor JSON-Import")) {
+    const detail = recoveryFailureMessage ? ` Ursache: ${recoveryFailureMessage}` : "";
+    throw new Error(`Der Import wurde abgebrochen, weil das Recovery-Backup nicht gespeichert werden konnte.${detail}`);
+  }
   const nextRuns=structuredClone(data.runs); const nextShoes=structuredClone(data.shoes);
   nextRuns.sort((a,b)=>new Date(`${b.date}T${b.time||"00:00"}`)-new Date(`${a.date}T${a.time||"00:00"}`));
   const nextSettings = validation.settings;
@@ -1532,11 +1536,14 @@ function migrationStatusLabel(status) {
 }
 
 function createAutomaticRecovery(reason) {
+  recoveryFailureMessage = "";
+  if (!runs.length && !shoes.length) return true;
   try {
     createRecoverySnapshot(reason, APP_VERSION, DB_VERSION, runs, shoes, settings);
     renderRecoveryBackups();
     return true;
   } catch (error) {
+    recoveryFailureMessage = error instanceof Error ? error.message : String(error);
     console.error(`Recovery-Backup fehlgeschlagen (${reason}). Die geplante Datenänderung wurde abgebrochen.`, error);
     if (backupStatus) {
       backupStatus.textContent = `Aktion abgebrochen: Recovery-Backup konnte nicht erstellt werden. ${error.message}`;
