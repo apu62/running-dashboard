@@ -688,6 +688,9 @@ function renderTrendChart(runs) {
 
   const maxDistance = Math.max(...series.map((run) => run.distance), 1);
   const maxPace = Math.max(...series.map((run) => run.pace), 1);
+  const heartRates = series.map((run) => Number(run.heartRate)).filter((value) => value > 0);
+  const minHeartRate = heartRates.length ? Math.min(...heartRates) : 0;
+  const heartRateRange = heartRates.length ? Math.max(...heartRates) - minHeartRate : 0;
   const width = 340;
   const height = 220;
   const padding = 24;
@@ -697,19 +700,34 @@ function renderTrendChart(runs) {
     const x = padding + (index / Math.max(series.length - 1, 1)) * (width - padding * 2);
     const distanceY = plotBottom - ((run.distance / maxDistance) * 90);
     const paceY = plotBottom - ((run.pace / maxPace) * 90);
-    return { x, distanceY, paceY, label: formatDate(run.date) };
+    const heartRate = Number(run.heartRate);
+    const heartRateY = heartRate > 0
+      ? plotBottom - 10 - (((heartRate - minHeartRate) / (heartRateRange || 1)) * 70)
+      : null;
+    return { x, distanceY, paceY, heartRate, heartRateY, label: formatDate(run.date) };
   });
 
   const pathDistance = points.map((point, index) => `${index === 0 ? "M" : "L"}${point.x.toFixed(1)},${point.distanceY.toFixed(1)}`).join(" ");
   const pathPace = points.map((point, index) => `${index === 0 ? "M" : "L"}${point.x.toFixed(1)},${point.paceY.toFixed(1)}`).join(" ");
+  const pathHeartRate = points.reduce((path, point, index) => {
+    if (point.heartRateY === null) return path;
+    const previousHasHeartRate = index > 0 && points[index - 1].heartRateY !== null;
+    return `${path}${previousHasHeartRate ? " L" : " M"}${point.x.toFixed(1)},${point.heartRateY.toFixed(1)}`;
+  }, "");
+  const heartRatePoints = points
+    .filter((point) => point.heartRateY !== null)
+    .map((point) => `<circle cx="${point.x.toFixed(1)}" cy="${point.heartRateY.toFixed(1)}" r="3" fill="#ff6b7a"><title>${point.heartRate} bpm</title></circle>`)
+    .join("");
 
   const labels = points.map((point) => `<text x="${point.x.toFixed(1)}" y="${plotBottom + 17}" text-anchor="middle" font-size="9" fill="#8ea1b8" transform="rotate(-45 ${point.x.toFixed(1)} ${plotBottom + 17})">${point.label}</text>`).join("");
 
   return `
-    <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Lauf-Pace und Distanz Visualisierung">
+    <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Visualisierung von Distanz, Pace und Herzfrequenz">
       <line x1="${padding}" y1="${plotBottom}" x2="${width - padding}" y2="${plotBottom}" stroke="#c7d2e3" stroke-width="1"></line>
       <path d="${pathDistance}" fill="none" stroke="#56d1b4" stroke-width="2.5"></path>
       <path d="${pathPace}" fill="none" stroke="#7ad7ff" stroke-width="2.5"></path>
+      ${pathHeartRate ? `<path d="${pathHeartRate}" fill="none" stroke="#ff6b7a" stroke-width="2.5"></path>` : ""}
+      ${heartRatePoints}
       ${labels}
       <text x="${width / 2}" y="${height - 5}" text-anchor="middle" font-size="10" font-weight="700" fill="#667085">Datum der letzten Läufe</text>
     </svg>

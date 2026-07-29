@@ -53,6 +53,7 @@
 .chart-legend { display: flex; gap: 16px; color: var(--muted); font-size: .85rem; }
 .chart-legend span::before { content: ""; display: inline-block; width: 9px; height: 9px; margin-right: 6px; border-radius: 50%; background: var(--green); }
 .chart-legend span:nth-child(2)::before { background: var(--blue); }
+.chart-legend span:nth-child(3)::before { background: var(--red); }
 .filter-row, .history-toolbar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .shoe-manager-grid { display: grid; grid-template-columns: minmax(180px, 1fr) minmax(180px, 1fr) auto; gap: 12px; align-items: end; }
 .run-entry { border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }

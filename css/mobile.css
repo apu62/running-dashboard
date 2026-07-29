@@ -17,6 +17,7 @@
   .version-chip { font-size: .75rem; }
   .panel { padding: 16px; border-radius: 15px; }
   .field-grid, .filter-row, .history-toolbar, .shoe-manager-grid, .record-grid, .settings-form, .highlights-list { grid-template-columns: 1fr; }
+  input[type="date"], input[type="time"] { width: 100%; min-inline-size: 0; }
   .span-2 { grid-column: auto; }
   .quick-cards, .stats-grid, .metric-cards { grid-template-columns: 1fr; }
   .run-summary { grid-template-columns: 1fr; }
