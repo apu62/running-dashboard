@@ -1,0 +1,8 @@
+.DS_Store
+
+# Lokale Exporte können persönliche Laufdaten enthalten.
+running-dashboard-backup-*.json
+lauftracking-*.csv
+
+# Vom GitHub-Actions-Workflow erzeugter Veröffentlichungsordner.
+_site/

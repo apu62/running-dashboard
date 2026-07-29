@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#2563eb" />
+  <title>Running Dashboard</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div><p class="eyebrow">Persönliches Lauftraining</p><h1>Running Dashboard</h1></div>
+      <div class="topbar-actions"><button type="button" id="theme-toggle" class="theme-toggle" aria-label="Farbschema wechseln">◐ Design</button><div class="version-chip">v3.1.2</div></div>
+    </header>
+
+    <main>
+      <section class="dashboard-grid">
+        <div class="entry-column">
+        <section class="panel form-panel accent-blue">
+          <div class="panel-heading"><div><h2 id="form-title">Neuer Lauf</h2><p>Die wichtigsten Werte kompakt erfassen.</p></div></div>
+          <form id="run-form" class="run-form">
+            <div class="field-grid">
+              <label>Datum<input type="date" id="date" required /></label>
+              <label>Uhrzeit<input type="time" id="time" required /></label>
+              <label>Distanz (km)<input type="text" id="distance" inputmode="decimal" placeholder="5,2" required /></label>
+              <label>Zeit (mm:ss / hh:mm:ss)<input type="text" id="duration" inputmode="numeric" placeholder="28:45" required /></label>
+              <label>Pace (min/km)<input type="text" id="pace-input" inputmode="decimal" placeholder="optional, z. B. 5:30" /></label>
+              <label>Ø Herzfrequenz<input type="number" id="heartRate" min="1" step="1" /></label>
+              <label>Kadenz<input type="number" id="cadence" min="1" step="1" /></label>
+              <label>Höhenmeter<input type="number" id="elevation" min="0" step="1" /></label>
+              <label>Gefühl<select id="feeling"><option value="5">5/5 – fantastisch</option><option value="4">4/5 – gut</option><option value="3" selected>3/5 – okay</option><option value="2">2/5 – anstrengend</option><option value="1">1/5 – schwer</option></select></label>
+              <label>Schuhe<select id="shoes"></select></label>
+              <label>Untergrund<input type="text" id="terrain" placeholder="Straße, Wald …" /></label>
+              <label>Strecke / Route<input type="text" id="route" placeholder="z. B. Grugapark" /></label>
+              <label>Ort<input type="text" id="location" placeholder="Essen" /></label>
+              <label>Temperatur (°C)<input type="number" id="temperature" step="0.1" /></label>
+              <label class="span-2">Wetter<input type="text" id="weather" placeholder="sonnig, Regen …" /></label>
+            </div>
+            <details class="notes-details"><summary>Notizen hinzufügen</summary><label class="full-width">Notizen<textarea id="notes" rows="3" placeholder="Wie war der Lauf?"></textarea></label></details>
+            <div class="button-row"><button type="button" id="weather-btn" class="secondary-btn">Wetter abrufen</button><button type="submit" id="save-run-btn">Lauf speichern</button><button type="button" id="cancel-edit-btn" class="secondary-btn" hidden>Abbrechen</button></div>
+            <p id="form-status" class="manager-status" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+        <section class="quick-cards" aria-label="Kompakter Trainingsüberblick">
+          <article class="quick-card accent-blue"><span>Letzter Lauf</span><strong id="last-run-compact">Noch kein Lauf</strong><small id="last-run-detail">–</small></article>
+          <article class="quick-card accent-green"><span>Diese Woche</span><strong id="week-compact">0 km</strong><small id="week-detail">0 Läufe</small></article>
+          <article class="quick-card accent-orange"><span>Dieser Monat</span><strong id="month-compact">0 km</strong><small id="month-detail">0 Läufe</small></article>
+          <article class="quick-card accent-orange"><span>Nächster Lauf</span><strong id="recommendation-compact">Noch keine Empfehlung</strong><small id="recommendation-detail">Entsteht aus deinen vorhandenen Läufen.</small></article>
+        </section>
+        </div>
+
+        <aside class="panel summary-panel accent-green">
+          <div class="panel-heading"><div><h2>Aktueller Überblick</h2><p>Dein Training auf einen Blick.</p></div></div>
+          <div class="stats-grid" id="stats-grid"></div>
+          <div class="metric-cards"><div class="metric-card"><span>Pace</span><strong id="pace-card">–</strong></div><div class="metric-card"><span>Kadenz</span><strong id="cadence-card">–</strong></div><div class="metric-card"><span>Herzfrequenz</span><strong id="heart-rate-card">–</strong></div></div>
+          <div class="insight-card compact"><h3>Trainings-Score</h3><div class="score-row"><div class="score-value" id="score-value">–</div><div><strong id="score-label">Noch keine Bewertung</strong><p id="score-text">Speichere einige Läufe.</p></div></div></div>
+          <div class="insight-card compact"><h3>Wichtigste Erkenntnisse</h3><div id="automatic-insights" class="automatic-insights"></div></div>
+          <div class="insight-card compact"><h3>Aktueller Trend</h3><p id="trend-text">Noch keine Daten vorhanden.</p></div>
+        </aside>
+      </section>
+
+      <nav class="tabs" aria-label="Dashboard-Bereiche" role="tablist">
+        <button class="tab-btn active" data-tab="analysis" role="tab" aria-selected="true" aria-controls="analysis">Entwicklung</button>
+        <button class="tab-btn" data-tab="records" role="tab" aria-selected="false" aria-controls="records">Rekorde</button>
+        <button class="tab-btn" data-tab="shoes-tab" role="tab" aria-selected="false" aria-controls="shoes-tab">Schuhe</button>
+        <button class="tab-btn" data-tab="history" role="tab" aria-selected="false" aria-controls="history">Laufhistorie</button>
+        <button class="tab-btn" data-tab="settings" role="tab" aria-selected="false" aria-controls="settings">Einstellungen</button>
+      </nav>
+
+      <section id="analysis" class="tab-panel active">
+        <div class="content-cards analysis-cards">
+          <section class="panel trend-panel"><h2>Trend-Visualisierung</h2><div class="chart-legend"><span>Distanz</span><span>Pace</span></div><div id="trend-chart" class="trend-chart"></div></section>
+          <section class="panel highlights-panel"><h2>Trainings-Highlights</h2><div id="highlights-list" class="highlights-list"></div><button type="button" id="highlights-toggle" class="secondary-btn highlights-toggle" hidden aria-expanded="false">Alle Highlights anzeigen</button></section>
+          <section class="panel hr-panel"><h2>HF/Pace-Analyse</h2><p id="hr-pace-analysis" class="analysis-text">Noch keine Daten.</p></section>
+          <section class="panel overview-panel"><h2>Wochen-/Monatsübersicht</h2><div class="filter-row"><label>Monat<select id="month-filter"><option value="all">Alle Monate</option></select></label><label>Strecke<select id="route-filter"><option value="all">Alle Strecken</option></select></label><label>Benchmark<select id="benchmark-filter"><option value="all">Alle Läufe</option><option value="5k">5 km</option><option value="10k">10 km</option><option value="15k">15 km</option></select></label></div><div id="overview-list" class="overview-list"></div><button type="button" id="overview-toggle" class="secondary-btn overview-toggle" hidden>Ältere Wochen anzeigen</button></section>
+        </div>
+      </section>
+
+      <section id="records" class="tab-panel"><section class="panel accent-purple"><h2>Persönliche Rekorde</h2><div id="best-performances" class="record-grid"></div></section></section>
+
+      <section id="shoes-tab" class="tab-panel">
+        <div class="content-cards">
+          <section class="panel"><h2>Schuh-Übersicht</h2><div id="shoe-wear-list" class="wear-list"></div></section>
+          <section class="panel"><h2>Schuhvergleich</h2><div class="table-scroll"><table class="comparison-table"><thead><tr><th>Schuh</th><th>Läufe</th><th>km</th><th>Ø Pace</th><th>Ø HF</th><th>Ø Kadenz</th></tr></thead><tbody id="shoe-comparison-body"></tbody></table></div></section>
+          <section class="panel shoe-manager-panel"><h2>Schuhe verwalten</h2><div class="shoe-manager-grid"><label>Neuen Schuh<input type="text" id="add-shoe-input" placeholder="Nike Pegasus 40" /></label><button type="button" id="add-shoe-btn">Hinzufügen</button><label>Schuh auswählen<select id="manage-shoe-select"></select></label><label>Neuer Name<input type="text" id="rename-shoe-input" /></label><button type="button" id="rename-shoe-btn">Umbenennen</button><label>Zusammenführen mit<select id="merge-shoe-select"></select></label><button type="button" id="merge-shoe-btn" class="secondary-btn">Zusammenführen</button><button type="button" id="remove-unused-shoe-btn" class="danger-btn">Unbenutzten Schuh löschen</button></div><p id="shoe-manager-status" class="manager-status"></p></section>
+        </div>
+      </section>
+
+      <section id="history" class="tab-panel">
+        <section class="panel">
+          <div class="panel-heading split"><div><h2>Laufhistorie</h2><p>Jeweils zehn Einträge, Details nur bei Bedarf.</p></div><div id="history-count" class="muted"></div></div>
+          <div class="history-toolbar"><input id="history-search" type="search" placeholder="Suche nach Ort, Route, Schuh oder Notiz" /><select id="history-shoe-filter"><option value="all">Alle Schuhe</option></select><select id="history-sort"><option value="newest">Neueste zuerst</option><option value="oldest">Älteste zuerst</option></select></div>
+          <div id="runs-list" class="runs-list"></div>
+          <div class="pagination"><button id="history-prev" class="secondary-btn">Zurück</button><span id="history-page">Seite 1</span><button id="history-next" class="secondary-btn">Weiter</button></div>
+        </section>
+      </section>
+
+      <section id="settings" class="tab-panel">
+        <div class="content-cards">
+          <section class="panel"><h2>Datensicherung</h2><p>JSON erhält Läufe, Schuhe, IDs, Einstellungen und Metadaten vollständig.</p><div class="settings-actions"><button id="json-export-btn">JSON sichern</button><label class="file-btn">JSON importieren<input id="json-import-input" type="file" accept="application/json,.json" /></label><button id="csv-export-btn" class="secondary-btn">CSV exportieren</button><button id="pdf-report-btn" class="secondary-btn">PDF-Bericht</button></div><p id="backup-status" class="manager-status" role="status" aria-live="polite"></p></section>
+          <section class="panel"><h2>Darstellung</h2><div class="settings-form"><label>Farbschema<select id="theme-setting"><option value="system">Systemeinstellung</option><option value="light">Hell</option><option value="dark">Dunkel</option></select></label><label>Einträge pro Historienseite<select id="history-page-size-setting"><option value="10">10 Einträge</option><option value="20">20 Einträge</option><option value="50">50 Einträge</option></select></label></div></section>
+          <section class="panel recovery-panel"><div class="panel-heading split"><div><h2>Recovery-Backups</h2><p>Bis zu fünf automatische lokale Sicherungen.</p></div><span id="recovery-count" class="version-chip">0 / 5</span></div><div id="recovery-list" class="recovery-list"></div></section>
+          <section class="panel"><h2>Datenbankstatus</h2><dl class="status-list"><div><dt>App-Version</dt><dd>3.1.2</dd></div><div><dt>Datenbankversion</dt><dd id="db-version">2</dd></div><div><dt>Migrationsstatus</dt><dd id="db-migration">Wird geprüft …</dd></div><div><dt>Speicherstatus</dt><dd id="db-health">Wird geprüft …</dd></div><div><dt>Läufe</dt><dd id="db-runs">0</dd></div><div><dt>Schuhe</dt><dd id="db-shoes">0</dd></div><div><dt>Letzte Änderung</dt><dd id="db-updated">–</dd></div><div><dt>Letztes Backup</dt><dd id="db-backup">–</dd></div></dl></section>
+          <section class="panel changelog accent-purple"><h2>Changelog 3.1.2</h2><ul><li>Trainings-Highlights auf ein ruhigeres Vollbreitenlayout umgestellt</li><li>Sechs zentrale Highlights werden standardmäßig angezeigt</li><li>Vier zusätzliche Highlights lassen sich bei Bedarf ein- und ausklappen</li><li>Drei Karten auf großen Displays, zwei auf Tablet und eine auf Mobilgeräten</li><li>Kartenabstände, Fokuszustände und dezente Hover-Rückmeldung optimiert</li></ul></section>
+          <section class="panel danger-zone"><h2>Gefahrenbereich</h2><p>Nur manuell nach zweifacher Bestätigung. Vorher werden JSON- und Recovery-Sicherung erzeugt.</p><button type="button" id="clear-btn" class="danger-btn">Alle Laufdaten löschen</button></section>
+        </div>
+      </section>
+    </main>
+
+    <footer><strong>Running Dashboard</strong><span>Version 3.1.2 · Build 2026.07.29 · Datenbank v2</span></footer>
+  </div>
+  <dialog id="backup-dialog" class="backup-dialog" aria-labelledby="backup-dialog-title"><form method="dialog"><div class="dialog-heading"><h2 id="backup-dialog-title">Backup-Vorschau</h2><button type="button" id="backup-dialog-close" class="secondary-btn" aria-label="Dialog schließen">Schließen</button></div><div id="backup-dialog-content"></div><div id="backup-dialog-actions" class="dialog-actions"></div></form></dialog>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

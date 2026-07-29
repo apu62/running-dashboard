@@ -1,0 +1,1 @@
+{"name":"Running Dashboard","short_name":"Running","start_url":"./","scope":"./","display":"standalone","background_color":"#f3f7fc","theme_color":"#377cf6","lang":"de-DE","description":"Persönliches Dashboard für Läufe, Statistiken und Laufschuhe","icons":[{"src":"icons/app-icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}

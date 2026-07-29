@@ -1,0 +1,92 @@
+.accent-blue { border-top: 4px solid var(--blue); }
+.accent-green { border-top: 4px solid var(--green); }
+.accent-orange { border-top: 4px solid var(--orange); }
+.accent-purple { border-top: 4px solid var(--purple); }
+.quick-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.stats-grid, .metric-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.quick-card, .stat-card, .metric-card { min-width: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 15px; padding: 14px; box-shadow: var(--shadow); }
+.quick-card span, .quick-card small, .metric-card span { display: block; color: var(--muted); font-size: .78rem; }
+.quick-card strong { display: block; margin: 5px 0; font-size: 1.08rem; }
+.stat-card { background: var(--blue-soft); }
+.stat-value, .metric-card strong { display: block; font-size: clamp(1rem, 2vw, 1.25rem); margin-top: 5px; overflow-wrap: anywhere; }
+.metric-card:nth-child(1) { background: var(--blue-soft); }
+.metric-card:nth-child(2) { background: var(--green-soft); }
+.metric-card:nth-child(3) { background: var(--orange-soft); }
+.insight-card { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 18px; }
+.score-row { display: flex; gap: 14px; align-items: center; }
+.score-value { color: var(--green); font-size: 2rem; font-weight: 800; }
+.automatic-insights, .overview-list, .highlights-list, .wear-list, .runs-list { display: grid; gap: 10px; margin-top: 14px; }
+.analysis-cards { grid-template-areas: "trend hr" "highlights highlights" "overview overview"; }
+.trend-panel { grid-area: trend; }
+.highlights-panel { grid-area: highlights; }
+.hr-panel { grid-area: hr; }
+.overview-panel { grid-area: overview; }
+.highlights-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.highlights-toggle { width: 100%; margin-top: 12px; }
+.insight-message, .highlight-item, .overview-item, .wear-item { background: var(--soft); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+.overview-item { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.overview-toggle { margin-top: 12px; width: 100%; }
+.insight-message.positive { border-left: 4px solid var(--green); }
+.insight-message.attention { border-left: 4px solid var(--orange); }
+.insight-message span { display: block; color: var(--muted); margin-top: 3px; }
+.record-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.record-grid .highlight-item { background: var(--purple-soft); border-color: color-mix(in srgb, var(--purple) 25%, var(--line)); }
+.training-highlight { min-width: 0; display: grid; align-content: start; gap: 5px; padding: 13px; border: 1px solid var(--line); border-radius: 15px; background: var(--soft); box-shadow: 0 8px 22px rgba(48, 68, 105, .06); transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease; }
+.training-highlight-icon { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; background: var(--control); font-size: 1.15rem; }
+.training-highlight-title { color: var(--muted); font-size: .76rem; font-weight: 800; letter-spacing: .035em; text-transform: uppercase; }
+.training-highlight-value { color: var(--text); font-size: clamp(1.05rem, 2vw, 1.35rem); line-height: 1.15; overflow-wrap: anywhere; }
+.training-highlight-detail, .training-highlight-date, .training-highlight-shoe { color: var(--muted); font-size: .78rem; line-height: 1.35; overflow-wrap: anywhere; }
+.training-highlight-date { margin-top: 2px; }
+.training-highlight-shoe { color: var(--label); font-weight: 700; }
+.training-highlight:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(48, 68, 105, .11); }
+.training-highlight:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 20%, transparent); }
+.highlight-blue { border-top: 3px solid var(--blue); background: color-mix(in srgb, var(--blue-soft) 72%, var(--panel)); }
+.highlight-green { border-top: 3px solid var(--green); background: color-mix(in srgb, var(--green-soft) 72%, var(--panel)); }
+.highlight-orange { border-top: 3px solid var(--orange); background: color-mix(in srgb, var(--orange-soft) 72%, var(--panel)); }
+.highlight-purple { border-top: 3px solid var(--purple); background: color-mix(in srgb, var(--purple-soft) 72%, var(--panel)); }
+@media (prefers-reduced-motion: reduce) {
+  .training-highlight { transition: none; }
+  .training-highlight:hover { transform: none; }
+}
+.trend-chart { min-height: 210px; overflow-x: auto; }
+.trend-chart svg { display: block; width: 100%; max-width: 100%; height: auto; }
+.chart-legend { display: flex; gap: 16px; color: var(--muted); font-size: .85rem; }
+.chart-legend span::before { content: ""; display: inline-block; width: 9px; height: 9px; margin-right: 6px; border-radius: 50%; background: var(--green); }
+.chart-legend span:nth-child(2)::before { background: var(--blue); }
+.filter-row, .history-toolbar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.shoe-manager-grid { display: grid; grid-template-columns: minmax(180px, 1fr) minmax(180px, 1fr) auto; gap: 12px; align-items: end; }
+.run-entry { border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
+.run-summary { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 14px; }
+.run-meta { color: var(--muted); font-size: .88rem; margin-top: 4px; overflow-wrap: anywhere; }
+.run-details { display: none; border-top: 1px solid var(--line); padding: 14px; background: var(--soft); }
+.run-entry.open .run-details { display: block; }
+.entry-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.entry-actions button { min-height: 44px; padding: 8px 11px; }
+.history-toolbar { margin-bottom: 14px; }
+.pagination { display: flex; justify-content: center; align-items: center; gap: 14px; margin-top: 16px; }
+.table-scroll { max-width: 100%; overflow-x: auto; }
+.comparison-table { width: 100%; border-collapse: collapse; min-width: 640px; }
+.comparison-table th, .comparison-table td { text-align: left; padding: 10px; border-bottom: 1px solid var(--line); }
+.status-list { display: grid; gap: 0; }
+.status-list div { display: flex; justify-content: space-between; gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.status-list dt { color: var(--muted); }
+.status-list dd { margin: 0; font-weight: 700; text-align: right; overflow-wrap: anywhere; }
+.settings-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.recovery-list { display: grid; gap: 10px; }
+.recovery-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 14px; background: var(--soft); border: 1px solid var(--line); border-radius: 14px; }
+.recovery-item strong, .wear-item strong { overflow-wrap: anywhere; }
+.recovery-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.recovery-actions button { min-height: 44px; padding: 8px 11px; }
+.backup-dialog { width: min(620px, calc(100% - 24px)); max-height: calc(100dvh - 24px); overflow-y: auto; border: 1px solid var(--line); border-radius: 18px; padding: 20px; background: var(--panel); color: var(--text); box-shadow: 0 24px 80px rgba(0, 0, 0, .28); }
+.backup-dialog::backdrop { background: rgba(10, 18, 32, .62); backdrop-filter: blur(3px); }
+.dialog-heading, .dialog-actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.dialog-heading h2 { margin: 0; }
+.dialog-actions { justify-content: flex-end; margin-top: 18px; }
+.preview-list { display: grid; margin: 16px 0; }
+.preview-list div { display: grid; grid-template-columns: minmax(130px, .7fr) minmax(0, 1.3fr); gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.preview-list dt { color: var(--muted); }
+.preview-list dd { margin: 0; font-weight: 700; overflow-wrap: anywhere; }
+.dialog-warning { margin: 14px 0; padding: 12px; border-left: 4px solid var(--orange); border-radius: 10px; background: var(--orange-soft); }
+.status-error { color: var(--red); }
+.changelog li { margin-bottom: 8px; }
+.danger-zone { border-color: color-mix(in srgb, var(--red) 40%, var(--line)); }

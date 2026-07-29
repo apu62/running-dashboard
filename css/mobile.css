@@ -1,0 +1,45 @@
+@media (max-width: 1199px) {
+  .dashboard-grid, .content-cards { grid-template-columns: 1fr; }
+  .content-cards > .panel:last-child:nth-child(odd) { grid-column: auto; }
+  .summary-panel { width: 100%; }
+  .field-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .record-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .quick-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .highlights-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .analysis-cards { grid-template-areas: "trend" "highlights" "hr" "overview"; }
+}
+
+@media (max-width: 767px) {
+  .app-shell { padding: 12px max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left)); }
+  .topbar { align-items: flex-start; }
+  .topbar-actions { flex-direction: column-reverse; align-items: flex-end; }
+  .theme-toggle { min-height: 44px; padding: 7px 10px; }
+  .version-chip { font-size: .75rem; }
+  .panel { padding: 16px; border-radius: 15px; }
+  .field-grid, .filter-row, .history-toolbar, .shoe-manager-grid, .record-grid, .settings-form, .highlights-list { grid-template-columns: 1fr; }
+  .span-2 { grid-column: auto; }
+  .quick-cards, .stats-grid, .metric-cards { grid-template-columns: 1fr; }
+  .run-summary { grid-template-columns: 1fr; }
+  .entry-actions { width: 100%; }
+  .entry-actions button { flex: 1 1 calc(50% - 8px); }
+  .button-row > *, .settings-actions > * { flex: 1 1 100%; }
+  .tabs { margin-top: 16px; scroll-snap-type: x proximity; }
+  .tab-btn { scroll-snap-align: start; }
+  footer { align-items: flex-start; flex-direction: column; }
+  .status-list div { align-items: flex-start; flex-direction: column; gap: 4px; }
+  .status-list dd { text-align: left; }
+  .overview-item { align-items: flex-start; flex-direction: column; gap: 6px; }
+  input, select, textarea { font-size: 16px; }
+  .recovery-item { grid-template-columns: 1fr; }
+  .recovery-actions { justify-content: stretch; }
+  .recovery-actions button { flex: 1 1 calc(50% - 8px); }
+  .backup-dialog { padding: 16px; }
+  .preview-list div { grid-template-columns: 1fr; gap: 3px; }
+  .dialog-actions { align-items: stretch; flex-direction: column-reverse; }
+  .dialog-actions button { width: 100%; }
+}
+
+@media (max-width: 380px) {
+  .topbar h1 { font-size: 1.55rem; }
+  .entry-actions button { flex-basis: 100%; }
+}
