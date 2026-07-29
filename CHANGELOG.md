@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.2.2 – 2026-07-29
+
+- UUID-Erzeugung mit Safari- und Home-Bildschirm-Umgebungen ohne `crypto.randomUUID()` kompatibel gemacht.
+- Sicheren `crypto.getRandomValues()`-Fallback für Recovery-Backups, Läufe, Schuhe und Migration ergänzt.
+- Service-Worker-Cache auf `running-dashboard-v3.2.2` aktualisiert.
+
 ## 3.2.1 – 2026-07-29
 
 - JSON-Import bei vollständig leerem Datenbestand ohne unnötiges Recovery-Backup ermöglicht.

@@ -1,4 +1,5 @@
 import { STORAGE_KEYS, loadMetadata, loadSettings, normalizeSettings } from "./storage.js";
+import { createUuid } from "./uuid.js";
 
 const MAX_RECOVERY_BACKUPS = 5;
 let recoveryReadError = null;
@@ -49,7 +50,7 @@ function persistRecoveryBackups(backups) {
 
 export function createRecoverySnapshot(reason, appVersion, dbVersion, runs, shoes, settings = loadSettings()) {
   const snapshot = {
-    id: crypto.randomUUID(),
+    id: createUuid(),
     format: "running-dashboard-recovery",
     reason,
     createdAt: new Date().toISOString(),

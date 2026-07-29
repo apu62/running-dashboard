@@ -40,9 +40,10 @@ import {
 import { filterAndSortRuns, paginateRuns } from "./history.js";
 import { groupRunsByShoe } from "./shoes.js";
 import { getPeriodSummary } from "./dashboard.js";
+import { createUuid } from "./uuid.js";
 
 const { runs: STORAGE_KEY, shoes: SHOES_KEY, shoeMigration: SHOE_MIGRATION_KEY, metadata: META_KEY } = STORAGE_KEYS;
-const APP_VERSION = "3.2.1";
+const APP_VERSION = "3.2.2";
 const DB_VERSION = 2;
 const BUILD_DATE = "2026.07.29";
 const form = document.getElementById("run-form");
@@ -254,7 +255,7 @@ form.addEventListener("submit", (event) => {
   const paceInputValue = document.getElementById("pace-input").value.trim();
   const parsedPace = parsePaceInput(paceInputValue);
   const entry = {
-    id: editingRunId || crypto.randomUUID(),
+    id: editingRunId || createUuid(),
     date: document.getElementById("date").value,
     time: document.getElementById("time").value,
     distance,
@@ -1248,7 +1249,7 @@ function addShoe() {
     return setShoeManagerStatus(`„${existingShoe.name}“ ist bereits vorhanden.`, true);
   }
 
-  const shoe = { id: crypto.randomUUID(), name: shoeName };
+  const shoe = { id: createUuid(), name: shoeName };
   shoes.push(shoe);
   saveShoes();
   addShoeInput.value = "";

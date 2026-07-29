@@ -1,5 +1,6 @@
 import { STORAGE_KEYS } from "./storage.js";
 import { createRecoverySnapshot } from "./backup.js";
+import { createUuid } from "./uuid.js";
 
 function readLegacyNames() {
   const raw = localStorage.getItem(STORAGE_KEYS.legacyShoes);
@@ -32,7 +33,7 @@ export function migrateDatabaseSafely(runs, shoes, settings, appVersion, dbVersi
     if (!cleanName) return null;
     const key = cleanName.toLocaleLowerCase("de");
     if (!byName.has(key)) {
-      const shoe = { id: crypto.randomUUID(), name: cleanName };
+      const shoe = { id: createUuid(), name: cleanName };
       nextShoes.push(shoe);
       byName.set(key, shoe);
     }

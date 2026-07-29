@@ -1,9 +1,9 @@
-const CACHE = "running-dashboard-v3.2.1";
+const CACHE = "running-dashboard-v3.2.2";
 const ASSETS = [
   "./", "./index.html", "./manifest.webmanifest", "./icons/app-icon.svg",
   "./css/main.css", "./css/layout.css", "./css/dashboard.css", "./css/mobile.css", "./css/themes.css",
   "./js/app.js", "./js/storage.js", "./js/migration.js", "./js/statistics.js", "./js/dashboard.js",
-  "./js/history.js", "./js/shoes.js", "./js/backup.js", "./js/ui.js",
+  "./js/history.js", "./js/shoes.js", "./js/backup.js", "./js/ui.js", "./js/uuid.js",
 ];
 
 self.addEventListener("install", (event) => {
