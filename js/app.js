@@ -12,8 +12,8 @@ import {
   loadSettings,
   saveSettings,
   normalizeSettings,
-} from "./storage.js?v=3.2.4";
-import { migrateDatabaseSafely } from "./migration.js?v=3.2.4";
+} from "./storage.js?v=3.2.5";
+import { migrateDatabaseSafely } from "./migration.js?v=3.2.5";
 import {
   createBackupObject as buildBackupObject,
   downloadJson as downloadBackupJson,
@@ -22,8 +22,8 @@ import {
   loadRecoveryBackups,
   deleteRecoveryBackup,
   getRecoveryHealth,
-} from "./backup.js?v=3.2.4";
-import { average as calculateAverage, clamp as clampNumber, getIsoWeekNumber } from "./statistics.js?v=3.2.4";
+} from "./backup.js?v=3.2.5";
+import { average as calculateAverage, clamp as clampNumber, getIsoWeekNumber } from "./statistics.js?v=3.2.5";
 import {
   localDateValue,
   escapeHtml,
@@ -36,16 +36,16 @@ import {
   formatCadence,
   formatElevation,
   formatPaceTrend,
-} from "./ui.js?v=3.2.4";
-import { filterAndSortRuns, paginateRuns } from "./history.js?v=3.2.4";
-import { groupRunsByShoe } from "./shoes.js?v=3.2.4";
-import { getPeriodSummary } from "./dashboard.js?v=3.2.4";
-import { createUuid } from "./uuid.js?v=3.2.4";
+} from "./ui.js?v=3.2.5";
+import { filterAndSortRuns, paginateRuns } from "./history.js?v=3.2.5";
+import { groupRunsByShoe } from "./shoes.js?v=3.2.5";
+import { getPeriodSummary } from "./dashboard.js?v=3.2.5";
+import { createUuid } from "./uuid.js?v=3.2.5";
 
 const { runs: STORAGE_KEY, shoes: SHOES_KEY, shoeMigration: SHOE_MIGRATION_KEY, metadata: META_KEY } = STORAGE_KEYS;
-const APP_VERSION = "3.2.4";
+const APP_VERSION = "3.2.5";
 const DB_VERSION = 2;
-const BUILD_DATE = "2026.07.29";
+const BUILD_DATE = "2026.07.30";
 const form = document.getElementById("run-form");
 const statsGrid = document.getElementById("stats-grid");
 const trendText = document.getElementById("trend-text");

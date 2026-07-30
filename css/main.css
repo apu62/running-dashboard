@@ -1,7 +1,7 @@
-@import url("./themes.css?v=3.2.4");
-@import url("./layout.css?v=3.2.4");
-@import url("./dashboard.css?v=3.2.4");
-@import url("./mobile.css?v=3.2.4");
+@import url("./themes.css?v=3.2.5");
+@import url("./layout.css?v=3.2.5");
+@import url("./dashboard.css?v=3.2.5");
+@import url("./mobile.css?v=3.2.5");
 
 * { box-sizing: border-box; }
 html { color-scheme: light dark; }
@@ -22,3 +22,23 @@ textarea { resize: vertical; }
 .empty-state { text-align: center; color: var(--muted); padding: 20px; }
 .manager-status { min-height: 1.25em; color: var(--muted); }
 .manager-status.error { color: var(--red); }
+
+@supports (-webkit-touch-callout: none) {
+  input[type="date"], input[type="time"] {
+    display: block;
+    width: 100%;
+    inline-size: 100%;
+    min-width: 0;
+    min-inline-size: 0;
+    max-width: 100%;
+    max-inline-size: 100%;
+    -webkit-min-logical-width: 0;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  input[type="date"]::-webkit-date-and-time-value,
+  input[type="time"]::-webkit-date-and-time-value {
+    min-width: 0;
+    text-align: center;
+  }
+}

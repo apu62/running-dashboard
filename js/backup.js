@@ -1,5 +1,5 @@
-import { STORAGE_KEYS, loadMetadata, loadSettings, normalizeSettings } from "./storage.js?v=3.2.4";
-import { createUuid } from "./uuid.js?v=3.2.4";
+import { STORAGE_KEYS, loadMetadata, loadSettings, normalizeSettings } from "./storage.js?v=3.2.5";
+import { createUuid } from "./uuid.js?v=3.2.5";
 
 const MAX_RECOVERY_BACKUPS = 5;
 let recoveryReadError = null;

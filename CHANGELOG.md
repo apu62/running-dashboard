@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.2.5 – 2026-07-30
+
+- Breitenkorrektur für native Datum- und Uhrzeitfelder auf iPadOS erweitert.
+- WebKit-Korrektur unabhängig von Bildschirmbreite und Ausrichtung gemacht.
+- Service-Worker-Cache auf `running-dashboard-v3.2.5` aktualisiert.
+
 ## 3.2.4 – 2026-07-29
 
 - Überblickskarten mit einer inhaltsabhängigen Mindestbreite versehen und bei schmalen Desktopfenstern automatisch auf weniger Spalten verteilt.

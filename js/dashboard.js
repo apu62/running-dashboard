@@ -1,4 +1,4 @@
-import { getIsoWeekNumber } from "./statistics.js?v=3.2.4";
+import { getIsoWeekNumber } from "./statistics.js?v=3.2.5";
 
 export function getPeriodSummary(runs, now = new Date()) {
   const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
