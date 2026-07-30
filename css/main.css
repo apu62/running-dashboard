@@ -1,7 +1,7 @@
-@import url("./themes.css?v=3.2.5");
-@import url("./layout.css?v=3.2.5");
-@import url("./dashboard.css?v=3.2.5");
-@import url("./mobile.css?v=3.2.5");
+@import url("./themes.css?v=3.3.0");
+@import url("./layout.css?v=3.3.0");
+@import url("./dashboard.css?v=3.3.0");
+@import url("./mobile.css?v=3.3.0");
 
 * { box-sizing: border-box; }
 html { color-scheme: light dark; }

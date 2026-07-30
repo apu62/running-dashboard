@@ -1,5 +1,6 @@
-import { STORAGE_KEYS, loadMetadata, loadSettings, normalizeSettings } from "./storage.js?v=3.2.5";
-import { createUuid } from "./uuid.js?v=3.2.5";
+import { STORAGE_KEYS, loadMetadata, loadSettings, normalizeSettings } from "./storage.js?v=3.3.0";
+import { createUuid } from "./uuid.js?v=3.3.0";
+import { getTrainingTypeFromRecord } from "./training-types.js?v=3.3.0";
 
 const MAX_RECOVERY_BACKUPS = 5;
 let recoveryReadError = null;
@@ -11,7 +12,7 @@ export function createBackupObject(runs, shoes, appVersion, dbVersion, settings 
     appVersion,
     dbVersion,
     exportedAt: new Date().toISOString(),
-    runs: structuredClone(runs),
+    runs: structuredClone(runs).map((run) => ({ ...run, trainingType: getTrainingTypeFromRecord(run) })),
     shoes: structuredClone(shoes),
     metadata: structuredClone(loadMetadata()),
     settings: structuredClone(normalizeSettings(settings)),

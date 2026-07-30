@@ -12,8 +12,8 @@ import {
   loadSettings,
   saveSettings,
   normalizeSettings,
-} from "./storage.js?v=3.2.5";
-import { migrateDatabaseSafely } from "./migration.js?v=3.2.5";
+} from "./storage.js?v=3.3.0";
+import { migrateDatabaseSafely } from "./migration.js?v=3.3.0";
 import {
   createBackupObject as buildBackupObject,
   downloadJson as downloadBackupJson,
@@ -22,8 +22,8 @@ import {
   loadRecoveryBackups,
   deleteRecoveryBackup,
   getRecoveryHealth,
-} from "./backup.js?v=3.2.5";
-import { average as calculateAverage, clamp as clampNumber, getIsoWeekNumber } from "./statistics.js?v=3.2.5";
+} from "./backup.js?v=3.3.0";
+import { average as calculateAverage, clamp as clampNumber, getIsoWeekNumber } from "./statistics.js?v=3.3.0";
 import {
   localDateValue,
   escapeHtml,
@@ -36,17 +36,19 @@ import {
   formatCadence,
   formatElevation,
   formatPaceTrend,
-} from "./ui.js?v=3.2.5";
-import { filterAndSortRuns, paginateRuns } from "./history.js?v=3.2.5";
-import { groupRunsByShoe } from "./shoes.js?v=3.2.5";
-import { getPeriodSummary } from "./dashboard.js?v=3.2.5";
-import { createUuid } from "./uuid.js?v=3.2.5";
+} from "./ui.js?v=3.3.0";
+import { filterAndSortRuns, paginateRuns } from "./history.js?v=3.3.0";
+import { groupRunsByShoe } from "./shoes.js?v=3.3.0";
+import { getPeriodSummary } from "./dashboard.js?v=3.3.0";
+import { createUuid } from "./uuid.js?v=3.3.0";
+import { formatTrainingType, getTrainingTypeFromRecord, getTrainingTypeOptions, normalizeTrainingType } from "./training-types.js?v=3.3.0";
 
 const { runs: STORAGE_KEY, shoes: SHOES_KEY, shoeMigration: SHOE_MIGRATION_KEY, metadata: META_KEY } = STORAGE_KEYS;
-const APP_VERSION = "3.2.5";
+const APP_VERSION = "3.3.0";
 const DB_VERSION = 2;
 const BUILD_DATE = "2026.07.30";
 const form = document.getElementById("run-form");
+const trainingTypeSelect = document.getElementById("training-type");
 const statsGrid = document.getElementById("stats-grid");
 const trendText = document.getElementById("trend-text");
 const automaticInsights = document.getElementById("automatic-insights");
@@ -131,6 +133,14 @@ let runs = loadRuns();
 let shoes = loadShoes();
 let editingRunId = null;
 initializeShoeDatabase();
+initializeTrainingTypeSelect();
+
+function initializeTrainingTypeSelect() {
+  trainingTypeSelect.innerHTML = getTrainingTypeOptions()
+    .map(({ value, label }) => `<option value="${value}">${label}</option>`)
+    .join("");
+  trainingTypeSelect.value = "unknown";
+}
 
 function buildFilterOptions() {
   const currentMonth = monthFilter.dataset.initialized ? monthFilter.value : settings.monthFilter;
@@ -265,6 +275,7 @@ form.addEventListener("submit", (event) => {
     cadence: Number(document.getElementById("cadence").value || 0),
     elevation: Number(document.getElementById("elevation").value || 0),
     feeling: Number(document.getElementById("feeling").value),
+    trainingType: normalizeTrainingType(trainingTypeSelect.value),
     terrain: document.getElementById("terrain").value.trim(),
     location: document.getElementById("location").value.trim(),
     temperature: document.getElementById("temperature").value,
@@ -357,7 +368,7 @@ function exportRunsAsCsv() {
   const headers = [
     "Datum", "Uhrzeit", "Distanz_km", "Dauer", "Pace_min_km", "Herzfrequenz_bpm",
     "Kadenz_spm", "Hoehenmeter_m", "Gefuehl_1_bis_5", "Schuh", "Untergrund",
-    "Ort", "Temperatur_C", "Wetter", "Route", "Notizen"
+    "Ort", "Temperatur_C", "Wetter", "Route", "Notizen", "Trainingsart"
   ];
 
   const rows = [...runs]
@@ -378,7 +389,8 @@ function exportRunsAsCsv() {
       run.temperature !== "" ? formatCsvNumber(run.temperature) : "",
       run.weather || "",
       run.route || "",
-      run.notes || ""
+      run.notes || "",
+      formatTrainingType(run.trainingType)
     ]);
 
   const csv = [headers, ...rows]
@@ -414,6 +426,7 @@ function openPdfReport() {
       <td>${formatHeartRate(run.heartRate)}</td>
       <td>${formatCadence(run.cadence)}</td>
       <td>${escapeHtml(getShoeName(run.shoeId))}</td>
+      <td>${escapeHtml(formatTrainingType(run.trainingType))}</td>
     </tr>`).join("");
 
   const reportWindow = window.open("", "_blank");
@@ -449,7 +462,7 @@ function openPdfReport() {
   <h2>Persönliche Rekorde</h2><div class="highlights-list">${reportRecords}</div>
   <h2>Trend der letzten Läufe</h2><div class="chart">${chart}</div>
   <h2>Schuhvergleich</h2><table><thead><tr><th>Schuh</th><th>Läufe</th><th>km</th><th>Ø Pace</th><th>Ø HF</th><th>Ø Kadenz</th></tr></thead><tbody>${shoeRows}</tbody></table>
-  <h2>Letzte Läufe</h2><table><thead><tr><th>Datum</th><th>Distanz</th><th>Pace</th><th>HF</th><th>Kadenz</th><th>Schuh</th></tr></thead><tbody>${recentRows}</tbody></table>
+  <h2>Letzte Läufe</h2><table><thead><tr><th>Datum</th><th>Distanz</th><th>Pace</th><th>HF</th><th>Kadenz</th><th>Schuh</th><th>Trainingsart</th></tr></thead><tbody>${recentRows}</tbody></table>
   </body></html>`);
   reportWindow.document.close();
   reportWindow.focus();
@@ -1149,7 +1162,7 @@ function renderRuns() {
   const query = (historySearch?.value || "").trim().toLocaleLowerCase("de");
   const shoeFilter = historyShoeFilter?.value || "all";
   const sortOrder = historySort?.value || "newest";
-  const filtered = filterAndSortRuns(runs, { query, shoeId: shoeFilter, sort: sortOrder, getShoeName });
+  const filtered = filterAndSortRuns(runs, { query, shoeId: shoeFilter, sort: sortOrder, getShoeName, getTrainingTypeName: formatTrainingType });
   const pagination = paginateRuns(filtered, historyCurrentPage, historyPageSize);
   const totalPages = pagination.totalPages;
   historyCurrentPage = pagination.currentPage;
@@ -1167,12 +1180,14 @@ function renderRuns() {
   runsList.innerHTML = pageRuns.map((run) => {
     const dateLabel = formatDate(run.date);
     const durationLabel = formatDuration(run.duration ?? 0);
+    const trainingType = normalizeTrainingType(run.trainingType);
+    const trainingTypeMeta = trainingType === "unknown" ? "" : `<div class="run-meta run-training-type">${escapeHtml(formatTrainingType(trainingType))}</div>`;
     return `<article class="run-entry">
       <div class="run-summary">
-        <div class="run-main"><strong>${dateLabel} · ${run.time || "--:--"}</strong><div class="run-meta">${formatDistance(run.distance)} · ${durationLabel} · ${formatPace(run.pace)} min/km · ${formatHeartRate(run.heartRate)}</div><div class="run-meta">${escapeHtml(getShoeName(run.shoeId))}${run.route ? ` · ${escapeHtml(run.route)}` : ""}</div></div>
+        <div class="run-main"><strong>${dateLabel} · ${run.time || "--:--"}</strong><div class="run-meta">${formatDistance(run.distance)} · ${durationLabel} · ${formatPace(run.pace)} min/km · ${formatHeartRate(run.heartRate)}</div><div class="run-meta">${escapeHtml(getShoeName(run.shoeId))}${run.route ? ` · ${escapeHtml(run.route)}` : ""}</div>${trainingTypeMeta}</div>
         <div class="entry-actions"><button class="secondary-btn" data-action="toggle" data-id="${run.id}">Details</button><button class="secondary-btn" data-action="edit" data-id="${run.id}">Bearbeiten</button><button class="danger-btn" data-action="delete" data-id="${run.id}">Löschen</button></div>
       </div>
-      <div class="run-details"><div class="run-meta">Ort: ${escapeHtml(run.location || "–")} · Untergrund: ${escapeHtml(run.terrain || "–")} · Wetter: ${escapeHtml(run.weather || "–")} ${run.temperature ? `· ${String(run.temperature).replace(".", ",")} °C` : ""}</div><div class="run-meta">Kadenz: ${formatCadence(run.cadence)} · Höhenmeter: ${formatElevation(run.elevation)} · Gefühl: ${run.feeling || "–"}/5</div><div class="run-meta">Notiz: ${escapeHtml(run.notes || "Keine Notiz")}</div></div>
+      <div class="run-details"><div class="run-meta">Ort: ${escapeHtml(run.location || "–")} · Untergrund: ${escapeHtml(run.terrain || "–")} · Wetter: ${escapeHtml(run.weather || "–")} ${run.temperature ? `· ${String(run.temperature).replace(".", ",")} °C` : ""}</div><div class="run-meta">Kadenz: ${formatCadence(run.cadence)} · Höhenmeter: ${formatElevation(run.elevation)} · Gefühl: ${run.feeling || "–"}/5</div>${trainingType === "unknown" ? "" : `<div class="run-meta">Trainingsart: ${escapeHtml(formatTrainingType(trainingType))}</div>`}<div class="run-meta">Notiz: ${escapeHtml(run.notes || "Keine Notiz")}</div></div>
     </article>`;
   }).join("");
 }
@@ -1211,6 +1226,7 @@ function startEditingRun(id) {
   document.getElementById("cadence").value = run.cadence || "";
   document.getElementById("elevation").value = run.elevation || "";
   document.getElementById("feeling").value = run.feeling || 3;
+  trainingTypeSelect.value = normalizeTrainingType(run.trainingType);
   document.getElementById("terrain").value = run.terrain || "";
   document.getElementById("location").value = run.location || "";
   document.getElementById("temperature").value = run.temperature || "";
@@ -1517,7 +1533,7 @@ async function importBackup(file) {
     const detail = recoveryFailureMessage ? ` Ursache: ${recoveryFailureMessage}` : "";
     throw new Error(`Der Import wurde abgebrochen, weil das Recovery-Backup nicht gespeichert werden konnte.${detail}`);
   }
-  const nextRuns=structuredClone(data.runs); const nextShoes=structuredClone(data.shoes);
+  const nextRuns=structuredClone(data.runs).map((run) => ({ ...run, trainingType: getTrainingTypeFromRecord(run) })); const nextShoes=structuredClone(data.shoes);
   nextRuns.sort((a,b)=>new Date(`${b.date}T${b.time||"00:00"}`)-new Date(`${a.date}T${a.time||"00:00"}`));
   const nextSettings = validation.settings;
   replaceDatabaseSafely(nextRuns, nextShoes, data.metadata, APP_VERSION, DB_VERSION, nextSettings);

@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.3.0 – 2026-07-30
+
+- Optionales Feld „Trainingsart“ im gemeinsamen Erstell- und Bearbeitungsformular ergänzt.
+- Zentrale interne Werte und deutsche Anzeigenamen für Regeneration, locker, Tempo, Intervall, langer Lauf und Wettkampf eingeführt.
+- Fehlende, leere und unbekannte Werte einheitlich als `unknown` behandelt.
+- Alte Läufe ohne Trainingsart ohne destruktive Migration kompatibel gehalten.
+- Trainingsart dezent in der Laufhistorie und vollständig in der Detailansicht ergänzt.
+- Historien-Suche um deutsche Trainingsart-Bezeichnungen erweitert.
+- JSON-Import um deutsche und englische Feldnamen und Werte erweitert.
+- JSON-Export mit stabilen internen Werten sowie CSV- und PDF-Ausgabe mit deutschen Anzeigenamen ergänzt.
+- Service-Worker-Cache auf `running-dashboard-v3.3.0` aktualisiert.
+
 ## 3.2.5 – 2026-07-30
 
 - Breitenkorrektur für native Datum- und Uhrzeitfelder auf iPadOS erweitert.

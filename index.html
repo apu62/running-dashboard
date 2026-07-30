@@ -7,13 +7,13 @@
   <meta name="theme-color" content="#2563eb" />
   <title>Running Dashboard</title>
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="stylesheet" href="css/main.css?v=3.2.5" />
+  <link rel="stylesheet" href="css/main.css?v=3.3.0" />
 </head>
 <body>
   <div class="app-shell">
     <header class="topbar">
       <div><p class="eyebrow">Persönliches Lauftraining</p><h1>Running Dashboard</h1></div>
-      <div class="topbar-actions"><button type="button" id="theme-toggle" class="theme-toggle" aria-label="Farbschema wechseln">◐ Design</button><div class="version-chip">v3.2.5</div></div>
+      <div class="topbar-actions"><button type="button" id="theme-toggle" class="theme-toggle" aria-label="Farbschema wechseln">◐ Design</button><div class="version-chip">v3.3.0</div></div>
     </header>
 
     <main>
@@ -32,6 +32,7 @@
               <label>Kadenz<input type="number" id="cadence" min="1" step="1" /></label>
               <label>Höhenmeter<input type="number" id="elevation" min="0" step="1" /></label>
               <label>Gefühl<select id="feeling"><option value="5">5/5 – fantastisch</option><option value="4">4/5 – gut</option><option value="3" selected>3/5 – okay</option><option value="2">2/5 – anstrengend</option><option value="1">1/5 – schwer</option></select></label>
+              <label>Trainingsart<select id="training-type"></select></label>
               <label>Schuhe<select id="shoes"></select></label>
               <label>Untergrund<input type="text" id="terrain" placeholder="Straße, Wald …" /></label>
               <label>Strecke / Route<input type="text" id="route" placeholder="z. B. Grugapark" /></label>
@@ -103,16 +104,16 @@
           <section class="panel"><h2>Datensicherung</h2><p>JSON erhält Läufe, Schuhe, IDs, Einstellungen und Metadaten vollständig.</p><div class="settings-actions"><button id="json-export-btn">JSON sichern</button><label class="file-btn">JSON importieren<input id="json-import-input" type="file" accept="application/json,.json" /></label><button id="csv-export-btn" class="secondary-btn">CSV exportieren</button><button id="pdf-report-btn" class="secondary-btn">PDF-Bericht</button></div><p id="backup-status" class="manager-status" role="status" aria-live="polite"></p></section>
           <section class="panel"><h2>Darstellung</h2><div class="settings-form"><label>Farbschema<select id="theme-setting"><option value="system">Systemeinstellung</option><option value="light">Hell</option><option value="dark">Dunkel</option></select></label><label>Einträge pro Historienseite<select id="history-page-size-setting"><option value="10">10 Einträge</option><option value="20">20 Einträge</option><option value="50">50 Einträge</option></select></label></div></section>
           <section class="panel recovery-panel"><div class="panel-heading split"><div><h2>Recovery-Backups</h2><p>Bis zu fünf automatische lokale Sicherungen.</p></div><span id="recovery-count" class="version-chip">0 / 5</span></div><div id="recovery-list" class="recovery-list"></div></section>
-          <section class="panel"><h2>Datenbankstatus</h2><dl class="status-list"><div><dt>App-Version</dt><dd>3.2.5</dd></div><div><dt>Datenbankversion</dt><dd id="db-version">2</dd></div><div><dt>Migrationsstatus</dt><dd id="db-migration">Wird geprüft …</dd></div><div><dt>Speicherstatus</dt><dd id="db-health">Wird geprüft …</dd></div><div><dt>Läufe</dt><dd id="db-runs">0</dd></div><div><dt>Schuhe</dt><dd id="db-shoes">0</dd></div><div><dt>Letzte Änderung</dt><dd id="db-updated">–</dd></div><div><dt>Letztes Backup</dt><dd id="db-backup">–</dd></div></dl></section>
-          <section class="panel changelog accent-purple"><h2>Changelog 3.2.5</h2><ul><li>Datum- und Uhrzeitfelder für iPad Pro korrigiert</li><li>Apple-WebKit-Regel unabhängig von Bildschirmbreite und Ausrichtung gemacht</li><li>iPhone- und PC-Darstellung unverändert beibehalten</li></ul></section>
+          <section class="panel"><h2>Datenbankstatus</h2><dl class="status-list"><div><dt>App-Version</dt><dd>3.3.0</dd></div><div><dt>Datenbankversion</dt><dd id="db-version">2</dd></div><div><dt>Migrationsstatus</dt><dd id="db-migration">Wird geprüft …</dd></div><div><dt>Speicherstatus</dt><dd id="db-health">Wird geprüft …</dd></div><div><dt>Läufe</dt><dd id="db-runs">0</dd></div><div><dt>Schuhe</dt><dd id="db-shoes">0</dd></div><div><dt>Letzte Änderung</dt><dd id="db-updated">–</dd></div><div><dt>Letztes Backup</dt><dd id="db-backup">–</dd></div></dl></section>
+          <section class="panel changelog accent-purple"><h2>Changelog 3.3.0</h2><ul><li>Optionale Trainingsart für neue und bestehende Läufe ergänzt</li><li>Sieben zentral validierte Trainingsarten mit deutschen Anzeigenamen eingeführt</li><li>Historie, Details, Suche sowie JSON-, CSV- und PDF-Ausgabe erweitert</li><li>Alte Läufe und Backups bleiben vollständig kompatibel</li></ul></section>
           <section class="panel danger-zone"><h2>Gefahrenbereich</h2><p>Nur manuell nach zweifacher Bestätigung. Vorher werden JSON- und Recovery-Sicherung erzeugt.</p><button type="button" id="clear-btn" class="danger-btn">Alle Laufdaten löschen</button></section>
         </div>
       </section>
     </main>
 
-    <footer><strong>Running Dashboard</strong><span>Version 3.2.5 · Build 2026.07.30 · Datenbank v2</span></footer>
+    <footer><strong>Running Dashboard</strong><span>Version 3.3.0 · Build 2026.07.30 · Datenbank v2</span></footer>
   </div>
   <dialog id="backup-dialog" class="backup-dialog" aria-labelledby="backup-dialog-title"><form method="dialog"><div class="dialog-heading"><h2 id="backup-dialog-title">Backup-Vorschau</h2><button type="button" id="backup-dialog-close" class="secondary-btn" aria-label="Dialog schließen">Schließen</button></div><div id="backup-dialog-content"></div><div id="backup-dialog-actions" class="dialog-actions"></div></form></dialog>
-  <script type="module" src="js/app.js?v=3.2.5"></script>
+  <script type="module" src="js/app.js?v=3.3.0"></script>
 </body>
 </html>

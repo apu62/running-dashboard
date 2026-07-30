@@ -61,6 +61,7 @@
 .run-entry { border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
 .run-summary { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 14px; }
 .run-meta { color: var(--muted); font-size: .88rem; margin-top: 4px; overflow-wrap: anywhere; }
+.run-training-type { display: inline-flex; width: fit-content; margin-top: 7px; padding: 3px 8px; border-radius: 999px; background: var(--control); color: var(--label); font-size: .75rem; font-weight: 750; }
 .run-details { display: none; border-top: 1px solid var(--line); padding: 14px; background: var(--soft); }
 .run-entry.open .run-details { display: block; }
 .entry-actions { display: flex; gap: 8px; flex-wrap: wrap; }

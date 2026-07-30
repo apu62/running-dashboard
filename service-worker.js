@@ -1,9 +1,9 @@
-const CACHE = "running-dashboard-v3.2.5";
+const CACHE = "running-dashboard-v3.3.0";
 const ASSETS = [
   "./", "./index.html", "./manifest.webmanifest", "./icons/app-icon.svg",
-  "./css/main.css?v=3.2.5", "./css/layout.css?v=3.2.5", "./css/dashboard.css?v=3.2.5", "./css/mobile.css?v=3.2.5", "./css/themes.css?v=3.2.5",
-  "./js/app.js?v=3.2.5", "./js/storage.js?v=3.2.5", "./js/migration.js?v=3.2.5", "./js/statistics.js?v=3.2.5", "./js/dashboard.js?v=3.2.5",
-  "./js/history.js?v=3.2.5", "./js/shoes.js?v=3.2.5", "./js/backup.js?v=3.2.5", "./js/ui.js?v=3.2.5", "./js/uuid.js?v=3.2.5",
+  "./css/main.css?v=3.3.0", "./css/layout.css?v=3.3.0", "./css/dashboard.css?v=3.3.0", "./css/mobile.css?v=3.3.0", "./css/themes.css?v=3.3.0",
+  "./js/app.js?v=3.3.0", "./js/storage.js?v=3.3.0", "./js/migration.js?v=3.3.0", "./js/statistics.js?v=3.3.0", "./js/dashboard.js?v=3.3.0",
+  "./js/history.js?v=3.3.0", "./js/shoes.js?v=3.3.0", "./js/backup.js?v=3.3.0", "./js/ui.js?v=3.3.0", "./js/uuid.js?v=3.3.0", "./js/training-types.js?v=3.3.0",
 ];
 
 self.addEventListener("install", (event) => {
